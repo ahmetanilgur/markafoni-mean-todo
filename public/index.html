@@ -1,0 +1,68 @@
+<!DOCTYPE>
+<html ng-app="myApp">
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+  <title>mean stack todo deneme</title>
+</head>
+<body>
+  <div class="container" ng-controller="AppCtrl">
+    <h1>mean stack todo deneme</h1>
+
+    <table class="table">
+     
+      <tbody>
+        <tr>
+          <td><input class="form-control" ng-model="todo.text"></td>
+<!--          <td><input class="form-control" ng-model="todo.status"></td>
+          <td><input class="form-control" ng-model="todo.active"></td>-->
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          <td><button class="btn btn-primary" ng-click="addTodo()">Add Todo</button></td>
+  	         <td>&nbsp;</td>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+
+        </tr>
+          <td>Todo Description</td>
+          <td>Status</td>
+          <td>Active</td>
+          <td>ID</td>
+          <td>Buttons</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          
+        <tr ng-repeat="todo in todolist">
+          <td>{{todo.text}}</td>
+          <td>
+            <p data-ng-if="todo.status>2">Done</p>
+            <p data-ng-if="todo.status==2">In progress</p>
+            <p data-ng-if="todo.status==1">Initialized</p>
+            <p data-ng-if="todo.status==0">Not initialized</p>
+            </td>
+          <td>
+            <p data-ng-if="todo.active>=2">Reactivated</p>
+            <p data-ng-if="todo.active==1">Closed</p>
+            <p data-ng-if="todo.active==0">Active</p>
+          </td>
+          <td>{{todo._id}}</td>
+          <td><button class="btn btn-danger" ng-click="remove(todo._id)">Remove</button></td>
+<!--          <td><button class="btn btn-warning" ng-click="edit(todo._id)">Edit</button></td>-->
+          <td><button class="btn btn-info" ng-click="update2(todo._id)">Increase Status</button></td>
+          <td><button class="btn btn-info" ng-click="update3(todo._id)">Increase Active</button></td>
+
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>
+<script src="controllers/controller.js"></script>
+</body>
+</html>
