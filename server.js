@@ -45,7 +45,7 @@ app.put('/todolist/:id', function (req, res) {
   console.log(req.body.text);
   db.todo.findAndModify({
     query: {_id: mongojs.ObjectId(id)},
-    update: {$inc: {status: 1}},
+    update: {$set: {text: req.body.text}},
     new: true}, function (err, doc) {
       res.json(doc);
     }
