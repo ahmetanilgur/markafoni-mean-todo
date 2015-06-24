@@ -50,17 +50,17 @@ $scope.updateStatus = function(id) {
   console.log(id);
   $http.put('/updateStatus/' + id, $scope.todo).success(function(response) {
     refresh();
-  })
+  });
 };
 $scope.updateActive = function(id) {
   console.log(id);
   $http.put('/updateActive/' + id, $scope.todo).success(function(response) {
     refresh();
-  })
+  });
 };
 
 $scope.deselect = function() {
   $scope.todo = "";
-}
+};
 
 }]);
