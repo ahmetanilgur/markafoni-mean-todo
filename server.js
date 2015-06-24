@@ -1,8 +1,8 @@
 /// <reference path="typings/node/node.d.ts"/>
 var express = require('express');
 var app = express();
-var mongojs = require('mongojs');
-var db = mongojs('todo', ['todo']);
+var db=require('./db/db');
+
 var bodyParser = require('body-parser');
 
 app.use(express.static(__dirname + '/public'));
@@ -17,17 +17,26 @@ app.get('/todolist', function (req, res) {
   });
 });
 
-app.post('/todolist', function (req, res) {
+//app.post('/todolist', function (req, res) {
+app.post('/add', function (req, res) {
   console.log(req.body.text);
   db.todo.insert({text: req.body.text, status: 0, active: 0}, function(err, doc) {
     res.json(doc);
   });
 });
-
-app.delete('/todolist/:id', function (req, res) {
+//1
+app.delete('/delete/:id', function (req, res) {
   var id = req.params.id;
   console.log(id);
-  db.todo.remove({_id: mongojs.ObjectId(id)}, function (err, doc) {
+  db.todo.remove({_id: db.ObjectId(id)}, function (err, doc) {
+    res.json(doc);
+  });
+});
+//2
+app.get('/delete/:id', function (req, res) {
+  var id = req.params.id;
+  console.log(id);
+  db.todo.remove({_id: db.ObjectId(id)}, function (err, doc) {
     res.json(doc);
   });
 });
@@ -35,27 +44,41 @@ app.delete('/todolist/:id', function (req, res) {
 app.get('/todolist/:id', function (req, res) {
   var id = req.params.id;
   console.log(id);
-  db.todo.findOne({_id: mongojs.ObjectId(id)}, function (err, doc) {
+  db.todo.findOne({_id: db.ObjectId(id)}, function (err, doc) {
     res.json(doc);
   });
 });
 
-app.put('/todolist/:id', function (req, res) {
+app.put('/update/:id/:text', function (req, res) {
+  var id = req.params.id;
+  var editedText = req.params.text;
+  console.log(req.body.text);
+  db.todo.findAndModify({
+    query: {_id: db.ObjectId(id)},
+    update: {$set: {text: editedText}},
+    new: true}, function (err, doc) {
+      res.json(doc);
+      console.log(editedText);
+    }
+  );
+});
+app.put('/updateStatus/:id', function (req, res) {
   var id = req.params.id;
   console.log(req.body.text);
   db.todo.findAndModify({
-    query: {_id: mongojs.ObjectId(id)},
-    update: {$set: {text: req.body.text}},
+    query: {_id: db.ObjectId(id)},
+    update: {$inc: {status: 1}},
     new: true}, function (err, doc) {
       res.json(doc);
     }
   );
 });
-app.put('/todolist2/:id', function (req, res) {
+//Status Update'inin rest api GET versiyonu.
+app.get('/updateStatus/:id', function (req, res) {
   var id = req.params.id;
   console.log(req.body.text);
   db.todo.findAndModify({
-    query: {_id: mongojs.ObjectId(id)},
+    query: {_id: db.ObjectId(id)},
     update: {$inc: {status: 1}},
     new: true}, function (err, doc) {
       res.json(doc);
@@ -63,11 +86,11 @@ app.put('/todolist2/:id', function (req, res) {
   );
 });
 
-app.put('/todolist3/:id', function (req, res) {
+app.put('/updateActive/:id', function (req, res) {
   var id = req.params.id;
   console.log(req.body.text);
   db.todo.findAndModify({
-    query: {_id: mongojs.ObjectId(id)},
+    query: {_id: db.ObjectId(id)},
     update: {$inc: {active: 1}},
     new: true}, function (err, doc) {
       res.json(doc);

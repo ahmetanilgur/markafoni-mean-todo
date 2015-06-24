@@ -1,5 +1,5 @@
 /// <reference path="../../typings/angularjs/angular.d.ts"/>
-var myApp = angular.module('myApp', []);
+var myApp = angular.module('myApp', ["xeditable"]);
 myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
     console.log("Hello World from controller");
 
@@ -13,10 +13,14 @@ var refresh = function() {
 };
 
 refresh();
+//xeditable dalgasi
+myApp.run(function(editableOptions) {
+  editableOptions.theme = 'default'; // bootstrap3 theme. Can be also 'bs2', 'default'
+});
 
 $scope.addTodo = function() {
   console.log($scope.todo);
-  $http.post('/todolist', $scope.todo).success(function(response) {
+  $http.post('/add', $scope.todo).success(function(response) {
     console.log(response);
     refresh();
   });
@@ -24,7 +28,7 @@ $scope.addTodo = function() {
 
 $scope.remove = function(id) {
   console.log(id);
-  $http.delete('/todolist/' + id).success(function(response) {
+  $http.delete('/delete/' + id).success(function(response) {
     refresh();
   });
 };
@@ -36,21 +40,21 @@ $scope.edit = function(id) {
   });
 };
 
-$scope.update = function() {
-  console.log($scope.todo._id);
-  $http.put('/todolist/' + $scope.todo._id, $scope.todo).success(function(response) {
+$scope.update = function(id) {
+  console.log(id);
+  $http.put('/update/' + id +"/"+this.$data).success(function(response) {
+    refresh();
+  });
+};
+$scope.updateStatus = function(id) {
+  console.log(id);
+  $http.put('/updateStatus/' + id, $scope.todo).success(function(response) {
     refresh();
   })
 };
-$scope.update2 = function(id) {
+$scope.updateActive = function(id) {
   console.log(id);
-  $http.put('/todolist2/' + id, $scope.todo).success(function(response) {
-    refresh();
-  })
-};
-$scope.update3 = function(id) {
-  console.log(id);
-  $http.put('/todolist3/' + id, $scope.todo).success(function(response) {
+  $http.put('/updateActive/' + id, $scope.todo).success(function(response) {
     refresh();
   })
 };
@@ -59,4 +63,4 @@ $scope.deselect = function() {
   $scope.todo = "";
 }
 
-}]);﻿
+}]);
