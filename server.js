@@ -88,14 +88,24 @@ app.get('/updateStatus/:id', function (req, res) {
 
 app.put('/updateActive/:id', function (req, res) {
   var id = req.params.id;
+
   console.log(req.body.text);
   db.todo.findAndModify({
     query: {_id: db.ObjectId(id)},
     update: {$inc: {active: 1}},
     new: true}, function (err, doc) {
-      res.json(doc);
+      
+       db.todo.findAndModify({
+    query: {_id: db.ObjectId(id),
+    status:{$gt:0},
+    active:{$gt:1}
+    },
+    update: {$set: {status: 0}},
+    new: true},function(err,doc2){
+        res.json(doc2);
     }
   );
+});
 });
 app.listen(3000);
 console.log("Server running on port 3000");

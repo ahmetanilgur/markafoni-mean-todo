@@ -15,9 +15,11 @@
     <h1>mean stack todo deneme</h1>
 <table style="width:100%">
   <tr>
+    <form>
         <td><input placeholder="Do not forget to write a todo.." class="form-control" ng-model="todo.text"></td>
+          
         <td>&nbsp;  	</td>
-        <td><button class="btn btn-primary" ng-click="addTodo()">Add Todo</button></td>
+        <td><button class="btn btn-primary" ng-click="addTodo()">Add Todo</button></td></form>
         <td>&nbsp;  	</td>
   </tr>
   <tr><td>&nbsp;  	</td></tr>
@@ -53,6 +55,7 @@
         <tr ng-repeat="todo in todolist">
           <td><a href="#" editable-text="todo.text">{{todo.text || 'empty' }}</a></td>
           <td>
+            
             <p data-ng-if="todo.status>2">Done</p>
             <p data-ng-if="todo.status==2">In progress</p>
             <p data-ng-if="todo.status==1">Initialized</p>
@@ -66,10 +69,11 @@
           <td>{{todo._id}}</td>
           <td><button class="btn btn-danger" ng-click="remove(todo._id)">Remove</button></td>
           <td>
-          <button data-ng-if="todo.status>2" disabled class="btn btn-info">Done</button>
-          <button data-ng-if="todo.status==2" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to Done</button>
-          <button data-ng-if="todo.status==1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to In Progress</button>
-          <button data-ng-if="todo.status==0" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to Initialized</button>
+          <button data-ng-if="todo.status>2 && todo.active!=1" disabled class="btn btn-info">Done</button>
+          <button data-ng-if="todo.active==1" disabled class="btn btn-info">Closed</button>
+          <button data-ng-if="todo.status==2 && todo.active!=1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to Done</button>
+          <button data-ng-if="todo.status==1 && todo.active!=1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to In Progress</button>
+          <button data-ng-if="todo.status==0 && todo.active!=1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to Initialized</button>
           </td>
           <td>
           <button data-ng-if="todo.active>1" disabled class="btn btn-info">Re-activated</button>            
