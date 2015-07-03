@@ -62,23 +62,27 @@
             <p data-ng-if="todo.status==0">Not initialized</p>
             </td>
           <td>
-            <p data-ng-if="todo.active>=2">Reactivated</p>
-            <p data-ng-if="todo.active==1">Closed</p>
-            <p data-ng-if="todo.active==0">Active</p>
+            <p data-ng-if="todo.active>=2" >Reactivated {{Math.floor(todo.active/2)}} time(s)</p>
+            <p data-ng-if="todo.active==1 ">Closed</p>
+            <p data-ng-if="todo.active%2==0 && todo.active<1">Active</p>
           </td>
           <td>{{todo._id}}</td>
           <td><button class="btn btn-danger" ng-click="remove(todo._id)">Remove</button></td>
           <td>
           <button data-ng-if="todo.status>2 && todo.active!=1" disabled class="btn btn-info">Done</button>
-          <button data-ng-if="todo.active==1" disabled class="btn btn-info">Closed</button>
-          <button data-ng-if="todo.status==2 && todo.active!=1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to Done</button>
-          <button data-ng-if="todo.status==1 && todo.active!=1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to In Progress</button>
-          <button data-ng-if="todo.status==0 && todo.active!=1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to Initialized</button>
+
+          <button  data-ng-if="todo.status==2 && todo.active%2!=1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to Done</button>
+          <button data-ng-if="todo.status==1 && todo.active%2!=1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to In Progress</button>
+          <button data-ng-if="todo.status==0 && todo.active%2!=1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to Initialized</button>
+            <!-- mod-->
+              <button disabled data-ng-if="todo.status==2 && todo.active%2==1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to Done</button>
+          <button disabled data-ng-if="todo.status==1 && todo.active%2==1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to In Progress</button>
+          <button disabled data-ng-if="todo.status==0 && todo.active%2==1" class="btn btn-info" ng-click="updateStatus(todo._id)">Change to Initialized</button>
           </td>
           <td>
-          <button data-ng-if="todo.active>1" disabled class="btn btn-info">Re-activated</button>            
-          <button data-ng-if="todo.active==1" class="btn btn-info" ng-click="updateActive(todo._id)">Re-Active</button>
-          <button data-ng-if="todo.active==0" class="btn btn-info" ng-click="updateActive(todo._id)">Close the thread</button>
+        
+          <button data-ng-if="(todo.active)%2==1" class="btn btn-info" ng-click="updateActive(todo._id)">Re-Active</button>
+          <button data-ng-if="(todo.active)%2==0" class="btn btn-info" ng-click="updateActive(todo._id)">Close the thread</button>
           </td>
 
         </tr>

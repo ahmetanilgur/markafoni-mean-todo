@@ -9,7 +9,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
 app.get('/todolist', function (req, res) {
-  console.log('I received a GET request');
+  console.log('-------------------------------I received a GET request');
 
   db.todo.find(function (err, docs) {
     console.log(docs);
@@ -88,8 +88,6 @@ app.get('/updateStatus/:id', function (req, res) {
 
 app.put('/updateActive/:id', function (req, res) {
   var id = req.params.id;
-
-  console.log(req.body.text);
   db.todo.findAndModify({
     query: {_id: db.ObjectId(id)},
     update: {$inc: {active: 1}},
@@ -98,7 +96,7 @@ app.put('/updateActive/:id', function (req, res) {
        db.todo.findAndModify({
     query: {_id: db.ObjectId(id),
     status:{$gt:0},
-    active:{$gt:1}
+    active:{$mod:[2,1]}
     },
     update: {$set: {status: 0}},
     new: true},function(err,doc2){

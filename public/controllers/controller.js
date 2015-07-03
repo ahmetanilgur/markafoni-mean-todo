@@ -11,7 +11,7 @@ var refresh = function() {
     $scope.todo = "";
   });
 };
-
+$scope.Math=Math;
 refresh();
 //xeditable dalgasi
 myApp.run(function(editableOptions) {
